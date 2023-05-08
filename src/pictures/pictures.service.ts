@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import sharp from 'sharp';
+import { uploadCloudinary } from '../helpers/uploadCloudinary';
+import { grayscaleFn } from '../helpers/sharp';
 
 @Injectable()
 export class PicturesService {
-  async grayscalePicture(picture: string): Promise<string> {
-    const editedPicture = await sharp(picture).withMetadata().grayscale().toBuffer()
-    console.log(editedPicture)
-    return 'Hello World!';
+  async grayscalePicture(picture: Express.Multer.File): Promise<string> {  
+    await grayscaleFn(`${process.cwd()}/src/thumbnails/mocked.jpg`) 
+    const { url } = await uploadCloudinary(`${process.cwd()}/src/thumbnails/mocked.jpg`)
+    return url;
   }
 }
